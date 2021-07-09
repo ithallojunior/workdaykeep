@@ -47,5 +47,5 @@ func runServer() {
 }
 
 func main() {
-
+	runServer()
 }
