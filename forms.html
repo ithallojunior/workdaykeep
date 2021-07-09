@@ -1,0 +1,36 @@
+{{if .Success}}
+
+<h2>This is your working day:</h2>
+
+<h5>
+    Clock in: {{.ClockIn}} <br>
+
+    Start break: {{.StartBreak}} <br>
+
+    End break: {{.EndBreak}} <br>
+
+    Clock out: {{.ClockOut}} <br>
+</h5>
+
+<h3>Total: {{.Total}}</h3>
+
+{{else}}
+<h1>Working day</h1>
+<form method="POST">
+
+    <label>Clock in:</label><br />
+    <input type="text" name="clock_in"><br />
+
+    <label>Start break:</label><br />
+    <input type="text" name="start_break"><br />
+
+    <label>End break:</label><br />
+    <input type="text" name="end_break"><br />
+
+    <label>Clock out:</label><br />
+    <input type="text" name="clock_out"><br />
+
+    <input type="submit">
+
+</form>
+{{end}}
