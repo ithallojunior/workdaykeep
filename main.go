@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -16,10 +17,17 @@ type WorkingDay struct {
 	Total      string
 }
 
+// Embedding form as string
+//go:embed forms.html
+var form string
+
 // Loads the forms and runs the server.
 func runServer() {
 
-	tmpl := template.Must(template.ParseFiles("forms.html"))
+	//tmpl := template.Must(template.ParseFiles("forms.html"))
+
+	// Loading from an embedded form.
+	tmpl, _ := template.New("forms.html").Parse(form)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
