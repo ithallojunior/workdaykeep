@@ -1,18 +1,24 @@
-{{if .Success}}
+<!-- forms.html -->
+{{if .GotData}}
 
-<h2>This is your working day:</h2>
+{{if .Day.IsValid}}
+<h1>This is how your working day should be:</h1>
 
 <h5>
-    Clock in: {{.ClockIn}} <br>
+    Clock in: {{.Day.ClockIn}} <br>
 
-    Start break: {{.StartBreak}} <br>
+    Start break: {{.Day.StartBreak}} <br>
 
-    End break: {{.EndBreak}} <br>
+    End break: {{.Day.EndBreak}} <br>
 
-    Clock out: {{.ClockOut}} <br>
+    Clock out: {{.Day.ClockOut}} <br>
 </h5>
 
-<h3>Total: {{.Total}}</h3>
+<h3>Total: {{.Day.Total}}</h3>
+
+{{else}}
+<h1>Missing clock in</h1>
+{{end}}
 
 {{else}}
 <h1>Working day</h1>
