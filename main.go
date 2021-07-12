@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 )
 
 type WorkingDay struct {
@@ -21,6 +22,48 @@ type WorkingDay struct {
 // Embedding form as string
 //go:embed forms.html
 var form string
+
+// Validates and adds new values for start break (4 hours after clock in)
+// end break (one hour after start break) and
+// calculates clock out (8 hours work journey) if none passed/invalid.
+func (w *WorkingDay) ValidateAndUpdate() {
+
+	layout := "15:04"
+
+	clockIn, err := time.Parse(layout, w.ClockIn)
+	if err != nil {
+		w.IsValid = false
+		return
+	}
+
+	journey := 8 * time.Hour
+
+	startBreak, err := time.Parse(layout, w.StartBreak)
+	if err != nil {
+		startBreak = clockIn.Add(4 * time.Hour)
+		w.StartBreak = startBreak.Format(layout)
+	}
+
+	endBreak, err := time.Parse(layout, w.EndBreak)
+	if err != nil {
+		endBreak = startBreak.Add(time.Hour)
+		w.EndBreak = endBreak.Format(layout)
+	}
+
+	// start break -  clock in
+	d1 := startBreak.Sub(clockIn)
+
+	clockOut, err := time.Parse(layout, w.ClockOut)
+	if err != nil {
+		clockOut = endBreak.Add(journey - d1)
+		w.ClockOut = clockOut.Format(layout)
+	}
+
+	total := d1 + clockOut.Sub(endBreak)
+	w.Total = total.String()
+
+	w.IsValid = true
+}
 
 // Loads the forms and runs the server.
 func runServer() {
