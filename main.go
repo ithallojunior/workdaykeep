@@ -41,7 +41,7 @@ func runServer() {
 	})
 
 	port := "8080"
-	fmt.Println("Running on port", port)
+	fmt.Println("Running on localhost:" + port)
 	http.ListenAndServe(":"+port, nil)
 
 }
